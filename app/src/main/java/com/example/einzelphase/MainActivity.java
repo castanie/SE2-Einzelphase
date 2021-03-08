@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -24,7 +25,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendMessage(View view) throws ExecutionException, InterruptedException {
-        Callable callable = new Callable() {
+        final EditText editTextNumber = (EditText) findViewById(R.id.editTextNumber);
+        final String studentNumber = editTextNumber.getText().toString();
+
+        Callable<String> callable = new Callable<String>() {
             @Override
             public String call() throws Exception {
                 try {
@@ -34,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                     InputStreamReader reader = new InputStreamReader(client.getInputStream());
 
                     // Write data to stream; must append LF character.
-                    writer.write("11904712\n");
+                    writer.write(studentNumber + "\n");
                     writer.flush();
 
                     // Read data from stream.
