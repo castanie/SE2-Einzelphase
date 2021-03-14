@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void sendMessage(View view) throws ExecutionException, InterruptedException {
+    public void sendButtonAction(View view) throws ExecutionException, InterruptedException {
         final EditText editTextNumber = (EditText) findViewById(R.id.editTextNumber);
         final String studentNumber = editTextNumber.getText().toString();
 
@@ -60,5 +60,37 @@ public class MainActivity extends AppCompatActivity {
 
         final TextView bottomTextView = (TextView) findViewById(R.id.bottomTextView);
         bottomTextView.setText(message.get());
+    }
+
+    public void calcButtonAction(View view) {
+        final EditText editTextNumber = (EditText) findViewById(R.id.editTextNumber);
+        final String studentNumber = editTextNumber.getText().toString();
+
+        String message = "Es existieren keine zwei Ziffern mit ggT > 1";
+        if (studentNumber.matches("[0-9]{8}")) {
+            loop:
+            for (int i = 0; i < studentNumber.length(); ++i) {
+                for (int j = 0; j < studentNumber.length(); ++j) {
+                    if (i != j && getGCD(Character.getNumericValue(studentNumber.charAt(i)), Character.getNumericValue(studentNumber.charAt(j))) > 1) {
+                        message = "Es existieren zwei Ziffern mit ggT = " + getGCD(Character.getNumericValue(studentNumber.charAt(i)), Character.getNumericValue(studentNumber.charAt(j))) + ": [" + i + "] und [" + j + "]";
+                        break loop;
+                    }
+                }
+            }
+        } else {
+            message = "Dies ist keine gueltige Matrikelnummer";
+        }
+
+        final TextView bottomTextView = (TextView) findViewById(R.id.bottomTextView);
+        bottomTextView.setText(message);
+    }
+
+    private int getGCD(int p, int q) {
+        while (q != 0) {
+            int temp = q;
+            q = p % q;
+            p = temp;
+        }
+        return p;
     }
 }
